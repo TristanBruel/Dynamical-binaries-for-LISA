@@ -1,0 +1,246 @@
+# Column description for the file MOCCA-binevol-BBH.dat
+#
+# All binary evolution calls within the simulation in which the binary components were BHs
+#
+# Naming convention:
+# Quantities ending in "i" describe the binary before the binary-evolution call.
+# Quantities ending in "f" describe the binary after the binary-evolution call.
+# Component labels 1 and 2 are not guaranteed to be ordered by mass. For plotting
+# mass-ordered quantities, use m1i_heavy/m2i_light and m1f_heavy/m2f_light.
+#
+# Core-property note:
+# mcore_0 and mcore_100 are the masses inside the core radius at T=0 and near
+# 100 Myr. rho_core_sys_0 and rho_core_sys_100 are the corresponding density
+# values written by the simulation. rho_core_calc_0 and rho_core_calc_100 are
+# recomputed as M_core / [(4/3) * pi * r_core^3].
+
+
+-----------Binary-evolution event identifiers-------------
+
+*   1 - identifier             - Integer identifier for the MOCCA model.
+*   2 - timevo                 - Physical time of the binary-evolution call [Myr].
+*   3 - system_tphys_event     - Cluster global output time time matched to the binary-evolution event [Myr]. Usually this is the first available system time at or just after timevo.
+*   4 - system_match_exact     - 1 if the matched cluster-system row is exactly at timevo, otherwise 0.
+*   5 - itype1                 - Integer describing the type or origin of the binary-evolution event. See the itype1 notes below.
+*   6 - zeroStep               - 1 if this was a zero-Myr timestep in the binary-evolution call, 0 otherwise.
+*   7 - outputId               - Output ID of the event, unique within the simulation.
+*   8 - timenr                 - Integer timestep number of the event.
+
+
+-----------Initial binary properties, before the call-------------
+
+*   9 - idb1i                  - Initial binary ID.
+*  10 - id1i                   - Initial ID of component 1.
+*  11 - id2i                   - Initial ID of component 2. If idd1 and idd2 differ by 1, the binary is likely primordial; otherwise it likely formed dynamically or exchange interactions.
+*  12 - im1i                   - Initial internal name/index of the binary object.
+*  13 - ikb1i                  - Initial binary type.
+*  14 - ik1i                   - Initial BSE stellar type of component 1. For black holes this should be 14.
+*  15 - ik2i                   - Initial BSE stellar type of component 2. For black holes this should be 14.
+*  16 - sm1i                   - Initial mass of component 1 [Msun].
+*  17 - sm2i                   - Initial mass of component 2 [Msun]. Note that sm2i can be larger than sm1i.
+*  18 - m1i_heavy              - Heavier initial component mass, max(sm1i, sm2i) [Msun].
+*  19 - m2i_light              - Lighter initial component mass, min(sm1i, sm2i) [Msun].
+*  20 - qi                     - Initial mass ratio, q = m2i_light / m1i_heavy.
+*  21 - mtoti                  - Initial total binary mass, sm1i + sm2i [Msun].
+*  22 - ap1i                   - Initial semi-major axis of the binary [Rsun]
+*  23 - ecc1i                  - Initial eccentricity of the binary.
+*  24 - r_cluster_pc           - Radial position of the binary in the cluster [pc].
+*  25 - r1i                    - Initial radius of component 1 [Rsun].
+*  26 - r2i                    - Initial radius of component 2 [Rsun].
+*  27 - ibstra1i               - Initial blue-straggler/channel flag for component 1.
+*  28 - ibstra2i               - Initial blue-straggler/channel flag for component 2.
+*  29 - iinter1i               - Initial collision/merger channel flag for component 1.
+*  30 - iinter2i               - Initial collision/merger channel flag for component 2.
+*  31 - ikind1i                - Initial object kind. In these files, binaries should generally have ikind1i = 2.
+
+
+-----------Final binary properties, after the evolution call call-------------
+
+*  32 - idb1f                  - Final binary ID.
+*  33 - id1f                   - Final ID of component 1.
+*  34 - id2f                   - Final ID of component 2.
+*  35 - im1f                   - Final internal name/index of the first object after the call.
+*  36 - ikb1f                  - Final binary type.
+*  37 - ik1f                   - Final BSE stellar type of component 1.
+*  38 - ik2f                   - Final BSE stellar type of component 2. If the second component was destroyed or merged, this may be 15.
+*  39 - iexist1                - 1 if the binary still exists after the call, 0 if it no longer exists as a binary.
+*  40 - ibstra1f               - Final blue-straggler/channel flag for component 1 (Not important).
+*  41 - ibstra2f               - Final blue-straggler/channel flag for component 2 (Not important).
+*  42 - iinter1f               - Final collision/merger channel flag for component 1.
+*  43 - iinter2f               - Final collision/merger channel flag for component 2.
+*  44 - ikind1f                - Final object kind of the first object.
+*  45 - ikind2f                - Final object kind of the second object, when applicable.
+*  46 - sm1f                   - Final mass of component 1 [Msun].
+*  47 - sm2f                   - Final mass of component 2 [Msun]. If the second component was destroyed or merged, this may be 0.
+*  48 - m1f_heavy              - Heavier final component mass, max(sm1f, sm2f) [Msun].
+*  49 - m2f_light              - Lighter final component mass, min(sm1f, sm2f) [Msun].
+*  50 - qf                     - Final mass ratio, q = m2f_light / m1f_heavy.
+*  51 - mtotf                  - Final total mass of the two listed components, sm1f + sm2f [Msun].
+*  52 - ap1f                   - Final semi-major axis of the binary. A value of 0 usually means the binary no longer exists as a bound binary after the call.
+*  53 - ecc1f                  - Final eccentricity of the binary. This is usually meaningful only if the binary still exists.
+*  54 - r1f                    - Final radius of component 1.
+*  55 - r2f                    - Final radius of component 2.
+*  56 - nwhich1                - Position/index of the first binary in the binary array.
+*  57 - im2f                   - Internal name/index of the second object after the call, especially useful for dissolved or merged binaries.
+
+
+-----------Velocities, populations, histories, and mass transfer-------------
+
+*  58 - vr1i                   - Initial radial velocity of the binary object [km/s].
+*  59 - vt1i                   - Initial tangential velocity of the binary object [km/s].
+*  60 - vr1f                   - Final radial velocity of the first object after the call [km/s].
+*  61 - vt1f                   - Final tangential velocity of the first object after the call [km/s]
+*  62 - vr2f                   - Final radial velocity of the second object after the call, when applicable [km/s].
+*  63 - vt2f                   - Final tangential velocity of the second object after the call, when applicable [km/s].
+*  64 - pop1i                  - Initial population index of component 1.
+*  65 - pop2i                  - Initial population index of component 2.
+*  66 - hist1                  - Compact history flag for component 1. See the history notes below.
+*  67 - hist2                  - Compact history flag for component 2. See the history notes below.
+*  68 - mtr1                   - Mass-transfer rate of the primary from the binary-evolution calculation.
+*  69 - mtr2                   - Mass-transfer rate of the secondary from the binary-evolution calculation.
+
+
+-----------Initial cluster properties, T=0-------------
+
+*  70 - smt0                   - Initial cluster mass [Msun].
+*  71 - rh0                    - Initial half-mass radius [pc].
+*  72 - rc0                    - Initial core radius [pc].
+*  73 - rho0                   - Initial central/core density [Msun/pc^3].
+*  74 - u1_0                   - Initial central potential, scaled to (km/s)^2.
+*  75 - vc_0                   - Initial central velocity dispersion [km/s].
+*  76 - rtid_0                 - Initial tidal radius [pc].
+*  77 - num_0                  - Initial number of objects in the cluster. Singles and binaries are counted as objects, so a binary counts as one object.
+*  78 - nbb_0                  - Initial number of binaries in the cluster.
+
+
+-----------Cluster properties at the binary-evolution event time-------------
+
+*  79 - smt_event              - Cluster mass at or just after the event time [Msun].
+*  80 - rh_event               - Half-mass radius at or just after the event time [pc].
+*  81 - rc_event               - Core radius at or just after the event time [pc].
+*  82 - rho_event              - Central/core density at or just after the event time [Msun/pc^3].
+*  83 - u1_event               - Central potential at or just after the event time, scaled to (km/s)^2.
+*  84 - vc_event               - Central velocity dispersion at or just after the event time [km/s].
+*  85 - rtid_event             - Tidal radius at or just after the event time [pc].
+*  86 - num_event              - Number of objects in the cluster at or just after the event time.
+*  87 - nbb_event              - Number of binaries in the cluster at or just after the event time.
+*  88 - max_sbh_event          - Maximum mass of a single black hole in the cluster at or just after the event time [Msun].
+*  89 - max_bbh_event          - Maximum black-hole component mass in a binary at or just after the event time [Msun].
+*  90 - csb_event              - Central surface brightness at or just after the event time [Lsun/pc^2].
+
+
+-----------Cluster properties at approximately 100 Myr-------------
+
+*  91 - time_100               - Cluster-system time at or just larger than 100 Myr [Myr].
+*  92 - smt_100                - Cluster mass at approximately 100 Myr [Msun].
+*  93 - rh_100                 - Half-mass radius at approximately 100 Myr [pc].
+*  94 - rc_100                 - Core radius at approximately 100 Myr [pc].
+*  95 - rho_100                - Central/core density at approximately 100 Myr [Msun/pc^3].
+*  96 - u1_100                 - Central potential at approximately 100 Myr, scaled to (km/s)^2.
+*  97 - vc_100                 - Central velocity dispersion at approximately 100 Myr [km/s].
+*  98 - rtid_100               - Tidal radius at approximately 100 Myr [pc].
+*  99 - num_100                - Number of objects in the cluster at approximately 100 Myr.
+* 100 - nbb_100                - Number of binaries in the cluster at approximately 100 Myr.
+
+
+-----------Extra model information-------------
+
+* 101 - metallicity_model      - Model metallicity Z, re-read from the model input/output files. If unavailable, the extraction may write 0.0.
+* 102 - rgc_kpc                - Approximate initial galactocentric radius [kpc].
+* 103 - n1                     - Initial number of objects in population 1.
+* 104 - n2                     - Initial number of objects in population 2. If only one population is present, this is usually 0.
+* 105 - conc_pop               - Second-population concentration parameter.
+* 106 - w0_pop1                - King W0 parameter for population 1.
+* 107 - w0_pop2                - King W0 parameter for population 2. If only one population is present, this is usually 0.
+* 108 - tdelay_ini             - Initial delay-time parameter used for the second population.
+* 109 - rtid_fac               - Tidal-radius migration factor.
+* 110 - rtid_time              - Timescale or reference time for tidal-radius migration [Myr].
+* 111 - migration_enabled      - 1 if the model has enabled tidal-radius migration according to the extraction criterion, otherwise 0.
+
+
+-----------Core quantities at T=0 and approximately 100 Myr-------------
+
+* 112 - mcore_0                - Mass inside the core radius at the initial cluster time [Msun].
+* 113 - rho_core_sys_0         - Density inside the core radius at the initial cluster time as written by the simulation [Msun/pc^3].
+* 114 - rho_core_calc_0        - Density inside the core radius at the initial cluster time, recomputed as mcore_0 / [(4/3) * pi * rc0^3] [Msun/pc^3].
+* 115 - mcore_100              - Mass inside the core radius at or just larger than 100 Myr [Msun].
+* 116 - rho_core_sys_100       - Density inside the core radius at or just larger than 100 Myr as written by the simulation [Msun/pc^3].
+* 117 - rho_core_calc_100      - Density inside the core radius at or just larger than 100 Myr, recomputed as mcore_100 / [(4/3) * pi * rc_100^3] [Msun/pc^3].
+
+
+-----------Model path-------------
+
+* 118 - path                   - Path to the cluster model directory.
+
+
+=============
+
+Notes:
+
+1. Meaning of itype1
+
+The itype1 column gives the type/source of the binary-evolution event:
+
+0  - single-star evolution, binary evolution, binary formation, or collision handled outside a strong binary-single/binary-binary encounter
+1  - binary-single interaction
+2  - binary-binary interaction
+3  - merger during binary evolution
+4  - merger associated with a binary-single interaction
+5  - merger associated with a binary-binary interaction
+6  - disruption during binary evolution
+7  - disruption associated with a binary-binary interaction
+8  - disruption associated with a binary-single interaction
+9  - exchange during a binary-single interaction
+10 - exchange during a binary-binary interaction
+13 - merger after a binary-single exchange
+15 - merger after a binary-binary exchange
+17 - merger after binary formation
+
+For many BBH applications, itype1 can be used to separate events driven mainly by
+internal binary evolution from events connected to dynamical interactions.
+
+2. Stellar-type columns
+
+The columns ik1i, ik2i, ik1f, and ik2f use the standard SSE/BSE stellar type
+integer convention. In this convention:
+
+14 - black hole
+15 - massless remnant / destroyed or removed object
+
+For the default BBH catalogue, the selected rows usually satisfy ik1i = 14 and
+ik2i = 14. If one component is consumed in a merger, the final type of the
+removed component may become 15.
+
+3. History columns hist1 and hist2
+
+The compact history columns encode short histories of the two components. They
+can record events such as collisions, binary mergers, mass transfer, strong
+interactions, exchanges, binary formation, dissolution, and changes in orbital
+separation or eccentricity.
+
+The digit positions correspond to the following event types:
+
+0000000000000000001 - had dynamical collision
+0000000000000000010 - had binary merger through stellar/binary evolution
+0000000000000000100 - had mass transfer and increased its mass
+0000000000000001000 - had a strong interaction, either binary-single or binary-binary
+0000000000000010000 - had exchange in an interaction
+0000000000000100000 - went into a binary
+0000000000001000000 - went to single through binary evolution dissolution
+0000000000010000000 - went to single through dynamical interaction dissolution
+0000000000100000000 - separation changed by at least 1 percent in an interaction
+0000000001000000000 - separation changed by at least 10 percent in an interaction
+0000000010000000000 - eccentricity changed by at least 1 percent in an interaction
+0000000100000000000 - eccentricity changed by at least 10 percent in an interaction
+0000001000000000000 - dissolution in a binary-single interaction
+0000010000000000000 - dissolution in a binary-binary interaction
+0000100000000000000 - dissolution in binary evolution
+0001000000000000000 - exchange in a binary-single interaction
+0010000000000000000 - exchange in a binary-binary interaction
+0100000000000000000 - dynamical collision in a binary-single interaction
+1000000000000000000 - dynamical collision in a binary-binary or hierarchical interaction
+
+For example, if a star had two dynamical collisions and five mass-transfer events,
+the compact history value would encode both counts in the corresponding digit
+positions.
+

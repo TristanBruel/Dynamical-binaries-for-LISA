@@ -1,0 +1,147 @@
+# Column description for MOCCA_escapers_BBH.dat
+
+The file contains 
+
+
+-----------Escaping binary properties-------------
+
+* 1  - identifier     - Integer identifier for the MOCCA model.
+* 2  - t_escp         - Time at which the BBH escaped [Myr].
+* 3  - idd1           - MOCCA ID of the first BH component.
+* 4  - idd2           - MOCCA ID of the second BH component. If idd1 and idd2 differ by 1, the binary is likely primordial; otherwise it likely formed dynamically or exchange interactions.
+* 5  - ik1            - BSE stellar type of component 1. For BHs this should be 14.
+* 6  - ik2            - BSE stellar type of component 2. For BHs this should be 14.
+* 7  - sm1            - Mass of component 1 [Msun].
+* 8  - sm2            - Mass of component 2 [Msun] (sm2 can be larger than sm1 for some binaries, please keep in mind when plotting)
+* 9  - ap             - Semi-major axis at the time of escape [Rsun].
+* 10 - ecc            - Eccentricity at the time of escape.
+
+* 11 - escape_vel     - Velocity of the escaping object [km/s].
+* 12 - escape_dis     - Radial distance of the escaping binary inside the cluster before escape [pc].
+* 13 - escape_ene     - Energy of the escaping binary in physical units.
+* 14 - escang         - Total angular momentum of the escaping object [pc km/s Msun: needs to be double checked].
+* 15 - ietype         - Reason for escape: 0 velocity assigned in relax.f, 1 relaxation escape, 2 two-body escape, 3 binary-single escape, 4 binary-binary escape (if ietype is greater than 2 then escape was due due to strong encounter)
+* 16 - iekind         - Kind of escaping object (should always be 2 for binary escapers)
+* 17 - esctime        - Exac escape time reported in escape.dat [Myr]; should be similar (or slightly smaller than t_escp in column 2.
+* 18 - mass_ratio     - Mass ratio of the binary components, q = m_small/m_large.
+* 19 - chirp_mass     - Binary chirp mass computed from the component masses [Msun].
+* 20 - t_GW_approx    - Approximate gravitational-wave merger time from Peters formula [Myr].
+* 21 - t_delay_approx - Approximate delay time = escape time + t_GW_approx [Myr].
+* 22 - hist1          - Compact history flag for component 1.
+* 23 - hist2          - Compact history flag for component 2.
+* 24 - outputID       - Output ID of the escaping binary.
+* 25 - nkick          - Natal-kick flag: 0 no kick, 1 single-star kick, 2 binary CM kick, 3 binary merger kick, 4 first-component kick, 5 second-component kick, 6 WD kick, 7 GR kick.
+
+
+-----------Initial cluster properties (T=0)-------------
+
+* 26 - smt0           - Initial cluster mass [Msun].
+* 27 - rh0            - Initial half-mass radius [pc].
+* 28 - rc0            - Initial core radius [pc].
+* 29 - rho0           - Initial central density [Msun/pc^3].
+* 30 - u1_0           - Initial central potential, scaled to (km/s)^2.
+* 31 - vc_0           - Initial central velocity dispersion, mass weighted [km/s].
+* 32 - rtid_0         - Initial tidal radius [pc].
+* 33 - num_0          - Initial number of objects in the cluster; singles plus binaries, with a binary counted as one object.
+* 34 - nbb_0          - Initial number of binaries in the cluster.
+
+
+-----------Cluster properties at the time the binary escaped-------------
+
+* 35 - smt_esc        - Cluster mass at escape time [Msun].
+* 36 - rh_esc         - Cluster half-mass radius at escape time [pc].
+* 37 - rc_esc         - Cluster core radius at escape time [pc].
+* 38 - rho_esc        - Central density at escape time [Msun/pc^3].
+* 39 - u1_esc         - Central potential at escape time, scaled to (km/s)^2.
+* 40 - vc_esc         - Central velocity dispersion at escape time, mass weighted [km/s].
+* 41 - rt_esc         - Tidal radius at escape time [pc].
+* 42 - num_esc        - Number of objects in the cluster at escape time.
+* 43 - nbb_esc        - Number of binaries in the cluster at escape time.
+* 44 - max_sbh_esc    - Maximum mass of a single BH in the cluster at escape time [Msun].
+* 45 - max_bbh_esc    - Maximum mass of a BH in a binary system in the cluster at escape time [Msun].
+* 46 - csb_esc        - Central surface brightness at escape time [Lsun/pc^2].
+
+
+-----------Cluster properties at 100 Myr-------------
+
+* 47 - time_100       - system.dat time at or just larger than 100 Myr [Myr].
+* 48 - smt_100        - Cluster mass at approximately 100 Myr [Msun].
+* 49 - rh_100         - Half-mass radius at approximately 100 Myr [pc].
+* 50 - rc_100         - Core radius at approximately 100 Myr [pc].
+* 51 - rho_100        - Central density at approximately 100 Myr [Msun/pc^3].
+* 52 - u1_100         - Central potential at approximately 100 Myr, scaled to (km/s)^2.
+* 53 - vc_100         - Central velocity dispersion at approximately 100 Myr, mass weighted [km/s].
+* 54 - rtid_100       - Tidal radius at approximately 100 Myr [pc].
+* 55 - num_100        - Number of objects in the cluster at approximately 100 Myr.
+* 56 - nbb_100        - Number of binaries in the cluster at approximately 100 Myr.
+
+
+-----------Original escaper catalogue metallicity-------------
+
+* 57 - metallicity    - Absolute metallicity of the cluster, Z, from the original escaper catalogue.
+
+
+-----------Merger and delay time-------------
+
+* 58 - t_merge        - Gravitational-wave merger time [Myr] from the full integration of Peter equations; more accurate than column 20.
+* 59 - t_delay        - Actual delay time = escape time + t_merge [Myr].
+
+
+-----------Extra model information regarding 2 populations-------------
+
+* 60 - metallicity_model - Model metallicity Z re-read from the model files. The appending script tries zini in mocca.ini, then Mcluster:zini in model-scale.dat, then column 9 of line 2 in single_nbody.dat. If unavailable, 0.0 is written.
+* 61 - rgc_kpc           - Approximate initial galactocentric radius [kpc], computed as sqrt(3*220^2*rtid_0^3/(G*smt0))/1000 with G=4.302e-3 in pc Msun^-1 (km/s)^2.
+* 62 - n1                - Initial number of objects in population 1 from mocca.ini parameter n. If unavailable, 0.
+* 63 - n2                - Initial number of objects in population 2 from mocca.ini parameter n. If only one population is present or unavailable, 0.
+* 64 - conc_pop          - Second-population concentration parameter from mocca.ini conc_pop. If unavailable, 0.0.
+* 65 - w0_pop1           - King W0 parameter for population 1 from mocca.ini w0, printed with one decimal place. If unavailable, 0.0.
+* 66 - w0_pop2           - King W0 parameter for population 2 from mocca.ini w0, printed with one decimal place. If only one population is present or unavailable, 0.0.
+* 67 - tdelay_ini        - tdelay parameter from mocca.ini. If unavailable, 0.0.
+* 68 - rtid_fac          - rtid_fac parameter from mocca.ini. If unavailable, 0.0.
+* 69 - rtid_time         - rtid_time parameter from mocca.ini [Myr]. If rtid_fac <= 1.0 or rtid_time is unavailable, 0.0 is written.
+* 70 - migration_enabled - 1 if rtid_fac > 1.0 and rtid_time < 15000.0 Myr, otherwise 0.
+
+
+-----------Core quantities from system.dat at T=0 and 100 Myr-------------
+
+* 71 - mcore_0           - Mass inside the core radius from system.dat column 23 at the initial system.dat time [Msun].
+* 72 - rho_core_sys_0    - Density inside the core radius from system.dat column 27 at the initial system.dat time [Msun/pc^3].
+* 73 - rho_core_calc_0   - Density inside the core radius computed as mcore_0 / [(4/3) * pi * rc_0^3], using system.dat columns 23 and 14 at the initial system.dat time [Msun/pc^3].
+* 74 - mcore_100         - Mass inside the core radius from system.dat column 23 at or just larger than 100 Myr [Msun].
+* 75 - rho_core_sys_100  - Density inside the core radius from system.dat column 27 at or just larger than 100 Myr [Msun/pc^3].
+* 76 - rho_core_calc_100 - Density inside the core radius computed as mcore_100 / [(4/3) * pi * rc_100^3], using system.dat columns 23 and 14 at or just larger than 100 Myr [Msun/pc^3].
+
+
+-----------Model path-------------
+
+* 77 - path      	- Path to the cluster model directory
+
+
+=============
+
+Notes:
+
+The compact history columns (hist1, hist2) above encode the short history of the events with the star
+
+0000000000000000001 - had dynamical collision (inter-coll)
+0000000000000000010 - had binary merger (stellar evolution)
+0000000000000000100 - had mass transfer event in binary evolution (increased the mass)
+0000000000000001000 - had interaction (bin-bin, or bin-sin)
+0000000000000010000 - had exchange in interaction
+0000000000000100000 - went to a binary (inter-binform)
+0000000000001000000 - went to single (dissolution in stellar evolution)
+0000000000010000000 - went to single (dissolution in interaction)
+0000000000100000000 - separation changed by 1% (in interaction)
+0000000001000000000 - separation changed by 10% (in interaction)
+0000000010000000000 - eccentricity changed by 1% (in interaction)
+0000000100000000000 - eccentricity changed by 10% (in interaction)
+0000001000000000000 - dissolution in bin-sin interaction
+0000010000000000000 - dissolution in bin-bin interaction
+0000100000000000000 - dissolution in binary evolution
+0001000000000000000 - exchange in bin-sin interaction
+0010000000000000000 - exchange in bin-bin interaction
+0100000000000000000 - dynamical collision in bin-sin
+1000000000000000000 - dynamical collision in bin-bin (or hierarchical)
+E.g. if the star had two dynamical collisions and 5 mass transfer events in binary evolution then it has hist column value of: 0000000052
+
+The values in ik1 and ik2 correspond to SSE/BSE stellar types from Hurley et al. (2000; 2002) where  14 is a black hole

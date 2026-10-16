@@ -1,0 +1,43 @@
+#!/bin/bash
+################
+nowdir=`pwd`
+rm -f $nowdir/clusterlist_ext
+rm -f $nowdir/mergerlist0_ext
+################
+dirlist=`cat pathlist`
+################
+mrgfile=orbitd_summary0_ext.dat
+################
+i=0
+for dir in $dirlist
+do
+#echo $dir
+if [ ! -d $dir ]
+then
+echo "Warning: $dir does not exist! Check path list. Moving on ..."
+else
+((++i))
+echo "Entering directory $dir"
+cd $dir
+##############################
+physcale=`tail -1 nbscaling`
+rbar=`echo "$physcale" | awk '{print $1}'`
+mcl=`head -100 run.out | grep "Conversion factors:" | awk '{print $6}' | tail -1`
+zmet=`head -100 run.out | grep "ABUNDANCES:" | awk '{print $10}' | head -1`
+bhflag=`head -100 run.out | grep "BHFLAG" | awk '{print $7}' | head -1`
+nsflag=`head -100 run.out | grep "NSFLAG" | awk '{print $8}' | head -1`
+kmech=`head -100 run.out | grep "KMECH" | awk '{print $10}' | head -1`
+orbit=`head -100 run.out | grep "ORBIT" | head -1`
+rgnb=`echo "$orbit" | awk '{print $5}'`
+rgkpc=`echo "scale=3;$rgnb*$rbar/1000.0" | bc -l`
+echo "$i   $mcl   $zmet   $bhflag $nsflag $kmech   $physcale   $rgkpc" >> $nowdir/clusterlist_ext
+if [ -e $mrgfile ]
+then
+awk -v clid=$i '{print clid}' $mrgfile | paste - $mrgfile >> $nowdir/mergerlist0_ext
+fi
+##############################
+cd
+fi
+done
+#
+echo "$i models explored."

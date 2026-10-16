@@ -1,0 +1,151 @@
+================================================================================
+ GR COMPACT-BINARY MERGER LIST  --  new_set_bin1a
+================================================================================
+
+Compilation of the INITIAL INSPIRAL CONFIGURATIONS of every general-relativistic
+(GR) compact-binary merger produced in the `new_set_bin1a` set of NBODY7 star-
+cluster models.  Both in-cluster and ejected (escaped) mergers are included.
+
+Each merger is recorded at the moment its final GR-driven inspiral begins -- i.e. the
+orbital configuration (masses, semi-major axis, eccentricity, spins) with which
+the binary enters the gravitational-wave-dominated regime and becomes decoupled from
+the rest of the cluster. From this initial
+state the event can be propagated to ANY later stage -- into the LISA / LIGO
+bands and on to coalescence -- with the Peters (1964) orbit-averaged equations
+or a more sophisticated post-Newtonian, spin-dependent integrator.  Joined with
+the per-cluster properties in `clusterlist_ext` (via the cluster id), this allows
+population synthesis of individual, distinct merger events.
+
+
+--------------------------------------------------------------------------------
+ CONTENTS
+--------------------------------------------------------------------------------
+  mergerlist0_ext         the merger list      (155 events; one row per merger)
+  clusterlist_ext         the cluster catalogue (90 clusters; one row per model)
+  pathlist                source NBODY7 run directories, in cluster-id order
+  gen_merger_list_ext_v2  the script that produced the two lists
+  README                  this file
+
+The two lists are joined on the CLUSTER ID = column 1 of each file.
+  - clusterlist_ext lists ALL 90 clusters in the set            (id = 1 .. 90).
+  - mergerlist0_ext references the 56 clusters that produced >= 1 GR merger;
+    a cluster with no merger simply does not appear in the merger list.
+
+Files are plain text, whitespace-separated (mixed spaces and tabs).
+
+
+--------------------------------------------------------------------------------
+ MERGER LIST   mergerlist0_ext   --   20 columns
+--------------------------------------------------------------------------------
+Column 1 is the cluster id (prepended for the join).  Columns 2-20 are the per-
+event `orbitd_summary0_ext.dat` record: cols 2-14 are the GR orbit-integrator
+state at the START of the inspiral (grorb / kozai toolkit, adotv2.f); cols 15-20
+are the dynamical component properties from the NBODY7 merger record.
+
+  col  name    unit     description
+  ---  ------  -------  -----------------------------------------------------
+   1   clid    -        cluster id   (join key -> clusterlist_ext col 1)
+   2   timed   Myr      absolute cluster-frame time = binary's formation/
+                        recording time since start of simulation + elapsed inspiral time
+                        (~ formation time for these initial-config rows)
+   3   time    Myr      elapsed time since the start of the GR integration (~0)
+   4   e       -        orbital eccentricity
+   5   semi    AU       semi-major axis
+   6   semir   -        semi-major axis in units of the merger cut-off a_min
+   7   edot    1/yr     de/dt
+   8   adot    AU/yr    da/dt
+   9   tgr     yr       local GR inspiral time, semi/adot
+  10   fk      Hz       Keplerian orbital frequency
+  11   fgw     Hz       peak GW frequency (Wen 2003; Antonini & Rasio 2016)
+  12   m1      Msun     primary mass    (integrator value)
+  13   m2      Msun     secondary mass  (integrator value)
+  14   mch     Msun     chirp mass, (m1 m2)^(3/5) / (m1+m2)^(1/5)
+  15   m1      Msun     primary mass    (NBODY7 record, full precision)
+  16   m2      Msun     secondary mass  (NBODY7 record, full precision)
+  17   id1     -        NBODY7 star name / id of the primary
+  18   id2     -        NBODY7 star name / id of the secondary
+  19   spin1   -        dimensionless spin of the primary    (chi_1)
+  20   spin2   -        dimensionless spin of the secondary  (chi_2)
+
+Cols 12-13 (integrator) and 15-16 (NBODY7 record) are the same two masses; use
+15-16 for higher precision.  The star ids (17-18) identify the components within
+their parent cluster's NBODY7 output.
+
+
+--------------------------------------------------------------------------------
+ CLUSTER CATALOGUE   clusterlist_ext   --   10 columns
+--------------------------------------------------------------------------------
+  col  name    unit     description
+  ---  ------  -------  -----------------------------------------------------
+   1   clid    -        cluster id   (join key -> mergerlist0_ext col 1)
+   2   mcl     Msun     initial total cluster mass
+   3   Z       -        metallicity (mass fraction)
+   4   bhflag  -        NBODY7 BH spin flag           (= 3 for this set = TS-dynamo)
+   5   nsflag  -        NBODY7 remnant-mass prescription    (= 4 for this set = 'delayed' model)
+   6   kmech   -        NBODY7 SN kick-mechanism flag        (= 1 for this set = 'momentum conserving kick')
+   7   rbar    pc       N-body -> physical length scale  (R*)
+   8   tstar   Myr      N-body -> physical time scale    (T*)
+   9   vstar   km/s     N-body -> physical velocity scale (V*)
+  10   rg      kpc      galactocentric radius (~ 8.5 kpc, solar circle)
+
+The 90 models span initial masses {1.0, 2.0, 3.0, 5.0, 7.5, 10.0} x 1e4 Msun,
+three initial half-mass radii (~ 1, 2, 3 pc), and five metallicities
+Z in {2e-4, 1e-3, 5e-3, 1e-2, 2e-2}.  Exact per-cluster values are in this file.
+
+
+--------------------------------------------------------------------------------
+ MATCHING THE TWO LISTS  (join on cluster id, column 1)
+--------------------------------------------------------------------------------
+awk -- attach cluster mass & metallicity to every merger:
+
+  awk 'NR==FNR { mcl[$1]=$2; Z[$1]=$3; next }
+       { printf "%s  Mcl=%s Z=%s\n", $0, mcl[$1], Z[$1] }' \
+      clusterlist_ext mergerlist0_ext
+
+python (pandas) -- full join:
+
+  import pandas as pd
+  mcols = ['clid','timed','time','e','semi','semir','edot','adot','tgr','fk',
+           'fgw','m1','m2','mch','m1n','m2n','id1','id2','spin1','spin2']
+  ccols = ['clid','mcl','Z','bhflag','nsflag','kmech','rbar','tstar','vstar','rg']
+  mrg = pd.read_csv('mergerlist0_ext', sep=r'\s+', names=mcols)
+  clu = pd.read_csv('clusterlist_ext', sep=r'\s+', names=ccols)
+  df  = mrg.merge(clu, on='clid')   # each merger now carries its cluster's props
+
+
+--------------------------------------------------------------------------------
+ USAGE & CAVEATS
+--------------------------------------------------------------------------------
+- "Initial inspiral configuration" = the orbital state (a, e, masses, spins) at
+  the moment the binary enters the GW-driven regime.  Integrate forward with the
+  Peters (1964) da/dt, de/dt equations to reach any later separation / frequency,
+  or with a PN + spin integrator for waveform and GW-recoil studies.
+- Many in-cluster mergers begin at very high eccentricity (e -> 1).  Their
+  orbital parameters are physical, but quantities derived from a truncated GW
+  strain array (NOT part of this share) can be unreliable for e very close to 1;
+  such sources are essentially burst-like and LISA-invisible at formation.
+- Spins (cols 19-20) are the dimensionless natal spins assigned by the NBODY7
+  simulation.  A value of exactly 1.000 is a PLACEHOLDER for maximal spin: the
+  code currently has no spin prescription for BHs formed from tidally spun-up
+  progenitors or grown by matter accretion -- channels expected to yield high
+  spins -- so such BHs are assigned chi = 1 by default.  Read chi = 1 as
+  "expected-high, not yet modelled" rather than a precisely computed value.
+
+
+--------------------------------------------------------------------------------
+ PROVENANCE
+--------------------------------------------------------------------------------
+- Per-cluster source: orbitd_summary0_ext.dat, built by `match_mrg_spin0` (the
+  summary0 analogue of `match_mrg_spin`): 13 GR-orbit columns + m1 m2 id1 id2
+  spin1 spin2 from the NBODY7 merger records.
+- GR-orbit columns are written by the inspiral integrator grorb (kozai toolkit,
+  adotv2.f).
+- Compiled by gen_merger_list_ext_v2 over `pathlist` (90 directories).
+- Totals: 90 clusters, 56 with >= 1 GR merger, 155 merger events.
+- Validation: mergerlist0_ext reproduces a row-for-row recompilation of the
+  sources; every cluster row's mass & metallicity match its source path; cluster
+  ids 1..90 are complete and unique.
+
+Generated 2026-06-25 from the new_set_bin1a NBODY7 model set.
+Contact: banerjee@hiskp.uni-bonn.de; sambaran.banerjee@gmail.com
+================================================================================
